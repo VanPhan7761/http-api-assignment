@@ -10,14 +10,88 @@
 
   <script>
 
+    //based off the server response, we display 
+    //text to the user
+    const handleResponse = async (response) => {
+
+      //Grab the content section from the page
+      const content = document.getElementById('content');
+
+      let contentMessage = '';
+
+      //Based on the status code we got back from the server, display something.
+      switch (response.status) {
+        case 200: //Success
+          content.innerHTML = `<b>Success</b>`;
+          break;
+        case 400: //Bad Request
+          content.innerHTML = `<b>Bad Request</b>`;
+          break;
+        case 404: //Not Found
+          content.innerHTML = `<b>Not Found</b>`;
+          break;
+        default: //Anything Else
+          content.innerHTML = `<p>Status Code not Implemented By Client</p>`;
+          break;
+      }
+
+      //turn our response to play text
+      response.text().then((resText) => {
+        //retrieve the type of content from the response
+        let contentType = response.headers.get('Content-Type');
+        //determine what to display on screen based off the content 
+        //type returned from the server
+        if (contentType === 'application/json') {
+          let parsedResponse = JSON.parse(resText);
+          contentMessage = parsedResponse.message;
+          console.log("JSON obj");
+
+        } else if (contentType === 'text/xml') {
+          let parsedResponse = new window.DOMParser().parseFromString(resText, 'text/xml');
+          contentMessage = parsedResponse.querySelector('message').textContent;
+          console.log("XML obj");
+        }
+      })
+
+      //Once the response.json() promise is fulfilled we move to this line, which displays the message.
+      content.innerHTML += `<p>${contentMessage}</p>`;
+    };
 
     //send a fetch request based off the selected values
     const sendFetch = async () => {
+
+      //determining what type of page is selected in drop down
       const selection = document.querySelector("#page");
       const url = selection.options[selection.selectedIndex].value;
 
-      //console.log(url);
-      let response = await fetch(url);
+      //determing what type of obj the user wants returned
+      let objType;
+
+      const selectionType = document.querySelector("#type");
+      const type = selectionType.options[selectionType.selectedIndex].value;
+
+      console.log(type);
+      
+      if (type == 'JSON') {
+        objType = 'application/json';
+        console.log("JSON selected");
+      }
+      else {
+        objType = 'text/xml';
+        console.log("XML selected");
+      }
+
+      const options = {
+        method: 'GET',
+        headers: { 'Accept': objType },
+      }
+
+
+      let responsePromise = fetch(url, options);
+
+      //when we fetch the data we want, the response is passed off to
+      //the handler to display our results
+      responsePromise.then((response) => { handleResponse(response) });
     }
 
     const init = () => {
@@ -44,8 +118,10 @@
       <option value="/notFound">Not Found</option>
     </select>
     <select id="type">
-      <option value="application/json">JSON</option>
-      <option value="text/xml">XML</option>
+      <!-- <option value="application/json">JSON</option>
+      <option value="text/xml">XML</option> DELETE ME LATER -->
+      <option value="JSON">JSON</option>
+      <option value="XML">XML</option>
     </select>
     <button id="send">Send</button>
   </section>

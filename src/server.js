@@ -24,11 +24,13 @@ const onRequest = (request, response) => {
     const parsedUrl = url.parse(request.url);
     const params = query.parse(parsedUrl.query);
 
+    const acceptedTypes = request.headers.accept.split(',');
+
     //runs request based off the url struct
     if (urlStruct[parsedUrl.pathname]) {
-        urlStruct[parsedUrl.pathname](request, response, params);
+        urlStruct[parsedUrl.pathname](request, response, acceptedTypes, params);
     } else {
-        urlStruct.notFound(request, response, params);
+        urlStruct.notFound(request, response, acceptedTypes, params);
     }
 };
 
