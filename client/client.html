@@ -6,6 +6,24 @@
   
   <script>
 
+
+    //send a fetch request based off the selected values
+    const sendFetch = async() => {
+      const selection = document.querySelector("#page");
+      const url = selection.options[selection.selectedIndex].value;
+
+      console.log(url);
+      //let response = await fetch()
+    }
+
+    const init = () =>{
+      const sendBtn = document.querySelector("#send");
+
+      sendBtn.addEventListener('click', sendFetch);
+    }
+
+    //run init when the page loads
+    window.onload = init;
   </script>
 </head>
 <body>
