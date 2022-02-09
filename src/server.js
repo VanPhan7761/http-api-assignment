@@ -13,6 +13,7 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 //favicon add later
 const urlStruct = {
     '/': htmlHandler.getIndex,
+    '/favicon.ico':htmlHandler.getFavicon,
     '/style.css': htmlHandler.getCSS,
     '/success': jsonHandler.success,
     '/badRequest': jsonHandler.badRequest,
