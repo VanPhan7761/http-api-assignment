@@ -29,15 +29,19 @@
           break;
         case 404: //Not Found
           content.innerHTML = `<b>Resource Not Found</b>`;
-        case 401:
-        content.innerHTML = `<b>Unauthorized</b>`;
-        case 403:
-        content.innerHTML = `<b>Forbidden</b>`;
-        case 500:
-        content.innerHTML = `<b>Internal Server Error</b>`;
           break;
-        case 501:
-        content.innerHTML = `<b>Not Implemented</b>`;
+        case 401:
+          content.innerHTML = `<b>Unauthorized</b>`;
+          break;
+        case 403:
+          content.innerHTML = `<b>Forbidden</b>`;
+          break;
+        case 500:
+          content.innerHTML = `<b>Internal Server Error</b>`;
+          break;
+        case 501: 
+          content.innerHTML = `<b>Not Implemented</b>`;
+          break;
         default: //Anything Else
           content.innerHTML = `<p>Status Code not Implemented By Client</p>`;
           break;
@@ -82,7 +86,7 @@
       const selectionType = document.querySelector("#type");
       const type = selectionType.options[selectionType.selectedIndex].value;
 
-      
+
       if (type == 'JSON') {
         objType = 'application/json';
       }
