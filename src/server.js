@@ -10,6 +10,7 @@ const jsonHandler = require('./jsonHandler.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+//favicon add later
 const urlStruct = {
     '/': htmlHandler.getIndex,
     '/style.css': htmlHandler.getCSS,
