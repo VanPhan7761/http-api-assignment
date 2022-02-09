@@ -3,7 +3,7 @@
 
 <head>
   <title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     Our simple HTTP server
   </title>
   <link rel="stylesheet" type="text/css" href="/style.css">
@@ -15,7 +15,7 @@
     const handleResponse = async (response) => {
 
       //Grab the content section from the page
-      const content = document.getElementById('content');
+      const content = document.querySelector("#content");
 
       let contentMessage = '';
 
@@ -28,8 +28,16 @@
           content.innerHTML = `<b>Bad Request</b>`;
           break;
         case 404: //Not Found
-          content.innerHTML = `<b>Not Found</b>`;
+          content.innerHTML = `<b>Resource Not Found</b>`;
+        case 401:
+        content.innerHTML = `<b>Unauthorized</b>`;
+        case 403:
+        content.innerHTML = `<b>Forbidden</b>`;
+        case 500:
+        content.innerHTML = `<b>Internal Server Error</b>`;
           break;
+        case 501:
+        content.innerHTML = `<b>Not Implemented</b>`;
         default: //Anything Else
           content.innerHTML = `<p>Status Code not Implemented By Client</p>`;
           break;
@@ -44,12 +52,16 @@
         if (contentType === 'application/json') {
           let parsedResponse = JSON.parse(resText);
           contentMessage = parsedResponse.message;
-          console.log("JSON obj");
+          console.log(parsedResponse);
+
+          content.innerHTML += `<p>${contentMessage}</p>`;
 
         } else if (contentType === 'text/xml') {
           let parsedResponse = new window.DOMParser().parseFromString(resText, 'text/xml');
           contentMessage = parsedResponse.querySelector('message').textContent;
-          console.log("XML obj");
+          console.log(parsedResponse);
+
+          content.innerHTML += `<p>${contentMessage}</p>`;
         }
       })
 
@@ -70,15 +82,12 @@
       const selectionType = document.querySelector("#type");
       const type = selectionType.options[selectionType.selectedIndex].value;
 
-      console.log(type);
       
       if (type == 'JSON') {
         objType = 'application/json';
-        console.log("JSON selected");
       }
       else {
         objType = 'text/xml';
-        console.log("XML selected");
       }
 
       const options = {
