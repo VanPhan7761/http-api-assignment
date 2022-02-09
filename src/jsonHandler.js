@@ -7,10 +7,12 @@ const respondJSON = (request, response, status, object, acceptedTypes) => {
   if (acceptedTypes[0] === 'text/xml') {
     const responseXML =
       `<response><message>${object.message}</message><id>${object.id}</id></response>`;
+    console.log(responseXML);
     response.write(responseXML);
   }
   else {
     const responseJsonObj = JSON.stringify(object);
+    console.log(responseJsonObj);
     response.write(responseJsonObj);
   }
 

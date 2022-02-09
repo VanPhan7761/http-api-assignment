@@ -30,16 +30,16 @@
         case 404: //Not Found
           content.innerHTML = `<b>Resource Not Found</b>`;
           break;
-        case 401:
+        case 401: //Unauthorized
           content.innerHTML = `<b>Unauthorized</b>`;
           break;
-        case 403:
+        case 403: //Forbidden
           content.innerHTML = `<b>Forbidden</b>`;
           break;
-        case 500:
+        case 500: //Internal Server Error
           content.innerHTML = `<b>Internal Server Error</b>`;
           break;
-        case 501: 
+        case 501: //Not Implemented
           content.innerHTML = `<b>Not Implemented</b>`;
           break;
         default: //Anything Else
@@ -56,7 +56,7 @@
         if (contentType === 'application/json') {
           let parsedResponse = JSON.parse(resText);
           contentMessage = parsedResponse.message;
-          console.log(parsedResponse);
+          console.log(parsedResponse); 
 
           content.innerHTML += `<p>${contentMessage}</p>`;
 
